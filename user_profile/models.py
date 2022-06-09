@@ -9,4 +9,4 @@ class Profile(models.Model):
     document = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return super().__str__()
+        return f"{self.user.username}, {self.user.email}"
