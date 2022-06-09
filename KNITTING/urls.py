@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from rest_framework.authtoken.views import obtain_auth_token
+from user_profile.views import obtain_auth_token
+# from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
