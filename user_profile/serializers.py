@@ -12,9 +12,12 @@ from user_profile.models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    email = serializers.CharField(source='user.email')
+
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'address', 'phone', 'document')
+        fields = ('id', 'username', 'email', 'address', 'phone', 'document')
 
 
 class UserSerializer(serializers.ModelSerializer):
