@@ -18,7 +18,8 @@ KIND_SECTOR = [
 
 class Machine(models.Model):
     name = models.CharField(max_length=20)
-    kind = models.CharField(choices=KIND_MACHINE)
+    kind = models.CharField(choices=KIND_MACHINE,
+                            max_length=20)
 
     def __str__(self):
         return f"{self.name} -- {self.kind}"
@@ -27,7 +28,8 @@ class Machine(models.Model):
 class Sector(models.Model):
     machine = models.ForeignKey(Machine,
                                 on_delete=models.CASCADE)
-    kind = models.CharField(choices=KIND_SECTOR)
+    kind = models.CharField(choices=KIND_SECTOR,
+                            max_length=20)
 
     def __str__(self):
         return f"{self.machine} -- {self.kind}"
@@ -42,8 +44,10 @@ class Part(models.Model):
                             blank=True)
     reference = models.PositiveIntegerField(default=0,
                                             blank=True)
-    price = models.DecimalField(default=0)
-    img = models.URLField(blan=True)
+    price = models.DecimalField(default=0,
+                                max_digits=10,
+                                decimal_places=2)
+    img = models.URLField(blank=True)
     stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
