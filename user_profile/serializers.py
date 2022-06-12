@@ -1,12 +1,10 @@
-from django.contrib.auth.models import User
-from django.core import validators
-from django.db import reset_queries
-from django.shortcuts import get_object_or_404
-from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from django.utils.translation import gettext_lazy as _, trim_whitespace
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
+from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+from rest_framework.validators import UniqueValidator
 
 from user_profile.models import Profile
 
