@@ -30,6 +30,7 @@ class Sector(models.Model):
                                 on_delete=models.CASCADE)
     kind = models.CharField(choices=KIND_SECTOR,
                             max_length=20)
+    img = models.URLField(blank=True)
 
     def __str__(self):
         return f"{self.machine} -- {self.kind}"
