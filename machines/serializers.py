@@ -6,15 +6,13 @@ from machines.models import Machine, Part, Sector
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Machine
-        fields = ('name', 'kind')
+        fields = ('id', 'name', 'kind')
 
 
 class SectorSerializer(serializers.ModelSerializer):
-    machine_name = serializers.CharField(source='machine.name')
-
     class Meta:
         model = Sector
-        fields = ('machine_name', 'kind', 'img')
+        fields = ('machine', 'kind', 'img')
 
 
 class PartSerializer(serializers.ModelSerializer):

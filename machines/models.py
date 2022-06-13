@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import CharField
 
 KIND_MACHINE = [
     ('knitting', 'KNITTING'),
@@ -17,12 +18,13 @@ KIND_SECTOR = [
 
 
 class Machine(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20,
+                            unique=True)
     kind = models.CharField(choices=KIND_MACHINE,
                             max_length=20)
 
     def __str__(self):
-        return f"{self.name} -- {self.kind}"
+        return f"{self.name} -- {self.kind} -- {self.pk}"
 
 
 class Sector(models.Model):
@@ -30,7 +32,7 @@ class Sector(models.Model):
                                 on_delete=models.CASCADE)
     kind = models.CharField(choices=KIND_SECTOR,
                             max_length=20)
-    img = models.URLField(blank=True)
+    img = models.URLField(blank=False)
 
     def __str__(self):
         return f"{self.machine} -- {self.kind}"
