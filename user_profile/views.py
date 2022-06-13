@@ -21,6 +21,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
     @action(detail=False, methods=['GET'])
+    def ask_superuser(self, request):
+        user = request.user
+        if user.is_superuser:
+            return Response('true', status=status.HTTP_400_BAD_REQUEST)
+        return Response('no admin', status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'])
     def get_id(self, request):
         user = request.user
         profile = Profile.objects.get(user=user)
