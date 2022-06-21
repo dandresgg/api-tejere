@@ -1,11 +1,24 @@
-from django.contrib.auth.models import User
 from django.db import models
+
+from user_profile.models import Profile
+
+STATE = [
+    ('no pago', 'NO PAGO'),
+    ('revision', 'REVISION'),
+    ('aprobado', 'APROBADO'),
+]
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(Profile,
                              on_delete=models.CASCADE)
     number = models.IntegerField(default=0)
-    data = models.JSONField(blank=True)
+    data_json = models.JSONField(blank=True,
+                                 default=dict)
+    state = models.CharField(max_length=20,
+                             choices=STATE)
     bill = models.FileField(upload_to='bills/',
                             blank=True)
+    send = models.BooleanField(default=False)
+    modified = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now=True)
