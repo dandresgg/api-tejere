@@ -16,9 +16,10 @@ class Order(models.Model):
     data_json = models.JSONField(blank=True,
                                  default=dict)
     state = models.CharField(max_length=20,
-                             choices=STATE)
+                             choices=STATE,
+                             null=True)
     bill = models.FileField(upload_to='bills/',
                             blank=True)
     send = models.BooleanField(default=False)
-    modified = models.DateTimeField(auto_now_add=True)
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
+    modified = models.DateTimeField(auto_now=True, null=True)
