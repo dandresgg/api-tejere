@@ -51,3 +51,12 @@ class PartViewSet(viewsets.ModelViewSet):
                 response.append(PartSerializer(part).data)
             return Response(response, status=status.HTTP_200_OK)
         return Response('false', status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'])
+    def id_from_reference(self, request):
+        ref = self.request.query_params.get('ref')
+        sector = self.request.query_params.get('sector')
+        part = Part.objects.filter(sector=sector, reference=ref)
+        if part:
+            return Response(part[0].id, status=status.HTTP_200_OK)
+        return Response('Elemento no encontrado', status=status.HTTP_200_OK)
