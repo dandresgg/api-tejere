@@ -17,7 +17,7 @@ class Order(models.Model):
                                  default=dict)
     state = models.CharField(max_length=20,
                              choices=STATE,
-                             null=True)
+                             default='no pago')
     bill = models.FileField(upload_to='bills/',
                             blank=True)
     send = models.BooleanField(default=False)
