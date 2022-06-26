@@ -8,6 +8,8 @@ from rest_framework.authtoken import views as auth_views
 from rest_framework.compat import coreapi, coreschema
 from rest_framework.schemas import ManualSchema
 from rest_framework.response import Response
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
 from user_profile.models import Profile
 from user_profile.serializers import ProfileSerializer,\
@@ -40,19 +42,18 @@ class ProfileViewSet(viewsets.ModelViewSet):
         body = request.data['body']
         user = request.user
         profile = Profile.objects.get(user=user)
-        if body[0] == 'username':
-            profile.user.username = body[1]
-        if body[0] == 'email':
-            profile.user.email = body[1]
-        if body[0] == 'address':
-            profile.address = body[1]
-        if body[0] == 'phone':
-            profile.phone = body[1]
-        if body[0] == 'document':
-            profile.document = body[1]
+        if not body[0]:
+            if body[0] == 'username':
+                profile.user.username = body[1]
+            if body[0] == 'email':
+                profile.user.email = body[1]
+            if body[0] == 'address':
+                profile.address = body[1]
+            if body[0] == 'phone':
+                profile.phone = body[1]
+            profile.save()
         if not profile:
             return Response('no user', status=status.HTTP_400_BAD_REQUEST)
-        profile.save()
         serializer = ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -61,6 +62,24 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
+
+    @action(detail=False, methods=["POST"])
+    def send_msm(self, request):
+        if not request.data['username']:
+            return Response('Debes poner nombre', status=status.HTTP_400_BAD_REQUEST)
+        if not request.data['email']:
+            return Response('Debes poner un correo', status=status.HTTP_400_BAD_REQUEST)
+        if not request.data['msm']:
+            return Response('Debes poner un mensaje', status=status.HTTP_400_BAD_REQUEST)
+        subject = f"Mensaje de {request.data['username']}"
+        content = f"{request.data['email']}, escribe {request.data['msm']}"
+        msm = EmailMultiAlternatives(subject,
+                                     content,
+                                     settings.EMAIL_HOST,
+                                     [settings.EMAIL_HOST])
+        # msm.attach_alternative(content, 'text/html')
+        msm.send()
+        return Response('done', status=status.HTTP_200_OK)
 
 
 class MyAuthToken(auth_views.ObtainAuthToken):
