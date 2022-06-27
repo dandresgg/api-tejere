@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 from user_profile.models import Profile
 
@@ -18,8 +19,8 @@ class Order(models.Model):
     state = models.CharField(max_length=20,
                              choices=STATE,
                              default='no pago')
-    bill = models.FileField(upload_to='bills/',
-                            blank=True)
+    bill = CloudinaryField('bills/',
+                           blank=True)
     send = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, null=True)
     modified = models.DateTimeField(auto_now=True, null=True)
