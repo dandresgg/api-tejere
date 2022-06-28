@@ -31,7 +31,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['knitting-api.herokuapp.com']
+ALLOWED_HOSTS = ['knitting-api.herokuapp.com',
+                 '127.0.0.1'
+                 ]
 
 # Application definition
 
@@ -169,7 +171,7 @@ CLOUDINARY_STORAGE = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000"
+    "http://localhost:3000", "https://tejerre.herokuapp.com/"
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
