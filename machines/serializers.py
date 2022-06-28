@@ -19,4 +19,4 @@ class PartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Part
         fields = ('id', 'sector', 'description', 'code',
-                  'reference', 'price', 'img', 'photo', 'stock')
+                  'reference', 'price', 'img', 'photo', 'stock', 'url_seller')
