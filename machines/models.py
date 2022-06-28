@@ -52,7 +52,9 @@ class Part(models.Model):
                                 blank=False)
     img = models.URLField(blank=False)
     photo = models.URLField(blank=False)
-    url_seller = models.URLField(blank=False, default="")
+    url_seller = models.URLField(blank=False,
+                                 default="",
+                                 max_length=400)
     stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
