@@ -75,8 +75,8 @@ class UserViewSet(viewsets.ModelViewSet):
         content = f"{request.data['email']}, escribe {request.data['msm']}"
         msm = EmailMultiAlternatives(subject,
                                      content,
-                                     settings.EMAIL_HOST,
-                                     [settings.EMAIL_HOST])
+                                     settings.EMAIL_HOST_USER,
+                                     [settings.EMAIL_HOST_USER])
         # msm.attach_alternative(content, 'text/html')
         msm.send()
         return Response('done', status=status.HTTP_200_OK)
