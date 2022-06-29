@@ -11,6 +11,7 @@ STATE = [
 
 
 class Order(models.Model):
+    '''Oder models'''
     user = models.ForeignKey(Profile,
                              on_delete=models.CASCADE)
     number = models.IntegerField(default=0)
