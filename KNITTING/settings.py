@@ -175,3 +175,11 @@ CORS_ORIGIN_WHITELIST = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_SSL_REDIRECT = config('DEBUG', default=False, cast=bool)
+CSRF_COOKIE_SECURE = config('DEBUG', default=False, cast=bool)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('DEBUG', default=False, cast=bool)
+SESSION_COOKIE_SECURE = config('DEBUG', default=False, cast=bool)
+SECURE_HSTS_PRELOAD = config('DEBUG', default=False, cast=bool)
