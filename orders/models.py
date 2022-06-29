@@ -20,7 +20,8 @@ class Order(models.Model):
                              choices=STATE,
                              default='no pago')
     bill = CloudinaryField('bills/',
-                           blank=True)
+                           blank=True,
+                           resource_type='raw')
     send = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, null=True)
     modified = models.DateTimeField(auto_now=True, null=True)
