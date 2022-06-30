@@ -8,5 +8,5 @@ admin.site.register(Sector)
 
 @admin.register(Part)
 class PartAdmin(admin.ModelAdmin):
-    list_display = ('description', 'code', 'reference', 'price', 'stock')
+    list_display = ('id', 'description', 'code', 'reference', 'price', 'stock')
     list_filter = ('reference', 'code', 'sector__kind')
