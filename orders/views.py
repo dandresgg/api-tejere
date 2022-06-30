@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from machines.models import Part
 
 from user_profile.models import Profile
 
@@ -27,3 +28,13 @@ class OrderViewSet(viewsets.ModelViewSet):
                 response.append(OrderSerializer(order).data)
             return Response(response, status=status.HTTP_200_OK)
         return Response('false', status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        order = Order.objects.get(id=request.data)
+        ls_orders = order.data_json
+        for ls_order in ls_orders:
+            if ls_order['qty'] > 0:
+                part = Part.objects.get(id=ls_order['id'])
+                part.stock = part.stock + ls_order['qty']
+                part.save()
+        return super().destroy(request, *args, **kwargs)
