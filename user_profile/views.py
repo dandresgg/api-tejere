@@ -42,7 +42,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         body = request.data['body']
         user = request.user
         profile = Profile.objects.get(user=user)
-        if not body[0]:
+        if body[0]:
             if body[0] == 'username':
                 profile.user.username = body[1]
             if body[0] == 'email':
