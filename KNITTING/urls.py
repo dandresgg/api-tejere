@@ -26,5 +26,6 @@ urlpatterns = [
     path('users/', include('user_profile.urls')),
     path('machine/', include('machines.urls')),
     path('orders/', include('orders.urls')),
+    path('blog/', include('blog.urls')),
     path('auth/', obtain_auth_token),
 ]
