@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'user_profile',
     'orders',
     'machines',
+    'blog',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
