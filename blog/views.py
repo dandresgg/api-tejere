@@ -8,4 +8,4 @@ from blog.serializers import PostSerializers
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializers
-    permission_classes = (AllowAny)
+    permission_classes = (AllowAny, )
