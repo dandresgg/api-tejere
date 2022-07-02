@@ -57,5 +57,8 @@ class Part(models.Model):
                                  max_length=400)
     stock = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        ordering = ['reference']
+
     def __str__(self):
         return f"{self.description}"
