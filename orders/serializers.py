@@ -5,7 +5,8 @@ from orders.models import Order
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    created = serializers.DateTimeField(format="%d-%m-%Y %H:%M:%S")
+    created = serializers.DateTimeField(format="%d-%m-%Y %H:%M:%S",
+                                        required=False)
 
     class Meta:
         model = Order

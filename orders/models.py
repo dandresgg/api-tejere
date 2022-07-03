@@ -24,5 +24,7 @@ class Order(models.Model):
                            blank=True,
                            resource_type='raw')
     send = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True, null=True)
+    created = models.DateTimeField(auto_now_add=True,
+                                   null=True,
+                                   blank=True)
     modified = models.DateTimeField(auto_now=True, null=True)
