@@ -173,7 +173,9 @@ CLOUDINARY_STORAGE = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000", "https://tejerre.herokuapp.com"
+    "http://localhost:3000",
+    "https://tejerre.herokuapp.com",
+    "http://tejerre.herokuapp.com"
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
