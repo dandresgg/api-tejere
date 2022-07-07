@@ -3,6 +3,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
 
 from machines.models import Machine, Part, Sector
 from machines.serializers import MachineSerializer, PartSerializer, SectorSerializer
@@ -59,4 +61,17 @@ class PartViewSet(viewsets.ModelViewSet):
         part = Part.objects.filter(sector=sector, reference=ref)
         if part:
             return Response(part[0].id, status=status.HTTP_200_OK)
+        return Response('Elemento no encontrado', status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'])
+    def get_trm(self, request):
+        URL = "https://www.dolar-colombia.com/"
+        HTML = urlopen(URL)
+        bs = BeautifulSoup(HTML, "html.parser")
+        elems = bs.find_all(
+            "span", {"class": "exchange-rate exchange-rate_up"})
+        for elem in elems:
+            trm = elem.get_text()
+            if trm:
+                return Response(trm, status=status.HTTP_200_OK)
         return Response('Elemento no encontrado', status=status.HTTP_200_OK)
