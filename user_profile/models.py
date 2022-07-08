@@ -1,3 +1,4 @@
+''' Profile model '''
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -8,4 +9,4 @@ class Profile(models.Model):
     phone = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.user.username}, {self.user.email}"
+        return f"{self.user}, {self.user.email}"

@@ -1,19 +1,19 @@
+''' Users viewsets '''
+from django.conf import settings
 from django.contrib.auth.models import User
-from django.shortcuts import render
-from rest_framework import viewsets, status
+from django.core.mail import EmailMultiAlternatives
+from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken import views as auth_views
 from rest_framework.compat import coreapi, coreschema
-from rest_framework.schemas import ManualSchema
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
+from rest_framework.schemas import ManualSchema
 
 from user_profile.models import Profile
-from user_profile.serializers import ProfileSerializer,\
-    UserSerializer, MyAuthTokenSerializer
+from user_profile.serializers import (MyAuthTokenSerializer, ProfileSerializer,
+                                      UserSerializer)
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -23,14 +23,16 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
     @action(detail=False, methods=['GET'])
-    def ask_superuser(self, request):
+    def ask_superuser(self, request) -> Response:
+        ''' Verify if user has superuser attributes '''
         user = request.user
         if user.is_superuser:
             return Response('true', status=status.HTTP_400_BAD_REQUEST)
         return Response('no admin', status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['GET'])
-    def get_id(self, request):
+    def get_id(self, request) -> Response:
+        ''' Send user id '''
         user = request.user
         profile = Profile.objects.get(user=user)
         if not profile:
@@ -38,7 +40,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return Response({'user_id': profile.id}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['POST'])
-    def update_profile(self, request):
+    def update_profile(self, request) -> Response:
+        ''' update field/s from profile '''
         body = request.data['body']
         user = request.user
         profile = Profile.objects.get(user=user)
@@ -64,13 +67,17 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny, )
 
     @action(detail=False, methods=["POST"])
-    def send_msm(self, request):
+    def send_msm(self, request) -> Response:
+        ''' Send msm from user to Email owner '''
         if not request.data['username']:
-            return Response('Debes poner nombre', status=status.HTTP_400_BAD_REQUEST)
+            return Response('Debes poner nombre',
+                            status=status.HTTP_400_BAD_REQUEST)
         if not request.data['email']:
-            return Response('Debes poner un correo', status=status.HTTP_400_BAD_REQUEST)
+            return Response('Debes poner un correo',
+                            status=status.HTTP_400_BAD_REQUEST)
         if not request.data['msm']:
-            return Response('Debes poner un mensaje', status=status.HTTP_400_BAD_REQUEST)
+            return Response('Debes poner un mensaje',
+                            status=status.HTTP_400_BAD_REQUEST)
         subject = f"Mensaje de {request.data['username']}"
         content = f"{request.data['email']}, escribe {request.data['msm']}"
         msm = EmailMultiAlternatives(subject,
@@ -83,6 +90,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class MyAuthToken(auth_views.ObtainAuthToken):
+    ''' Custom auth credentials, login with email '''
     serializer_class = MyAuthTokenSerializer
     if coreapi is not None and coreschema is not None:
         schema = ManualSchema(

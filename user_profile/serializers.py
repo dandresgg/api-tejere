@@ -1,3 +1,4 @@
+''' Profile serializers '''
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -10,6 +11,7 @@ from user_profile.models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    ''' profile serializers '''
     username = serializers.CharField(source='user.username')
     email = serializers.CharField(source='user.email')
 
@@ -37,6 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MyAuthTokenSerializer(serializers.Serializer):
+    ''' Validate email and password serializers '''
     email = serializers.EmailField(label=_('Email'))
     password = serializers.CharField(
         label=_("Password", ),

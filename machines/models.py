@@ -1,3 +1,4 @@
+''' Machines models '''
 from django.db import models
 
 KIND_MACHINE = [
@@ -17,6 +18,7 @@ KIND_SECTOR = [
 
 
 class Machine(models.Model):
+    ''' Machine model fields '''
     name = models.CharField(max_length=20,
                             unique=True)
     kind = models.CharField(choices=KIND_MACHINE,
@@ -27,6 +29,7 @@ class Machine(models.Model):
 
 
 class Sector(models.Model):
+    ''' Sector model fields '''
     machine = models.ForeignKey(Machine,
                                 on_delete=models.CASCADE)
     kind = models.CharField(choices=KIND_SECTOR,
@@ -38,6 +41,7 @@ class Sector(models.Model):
 
 
 class Part(models.Model):
+    ''' Part model fields '''
     sector = models.ForeignKey(Sector,
                                on_delete=models.CASCADE)
     description = models.TextField(max_length=150,

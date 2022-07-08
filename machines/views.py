@@ -1,13 +1,16 @@
-from rest_framework import viewsets, status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from bs4 import BeautifulSoup
+''' Machine views '''
 from urllib.request import urlopen
 
+from bs4 import BeautifulSoup
+from rest_framework import status, viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
 from machines.models import Machine, Part, Sector
-from machines.serializers import MachineSerializer, PartSerializer, SectorSerializer
+from machines.serializers import (MachineSerializer, PartSerializer,
+                                  SectorSerializer)
 
 
 class MachineViewSet(viewsets.ModelViewSet):
@@ -24,8 +27,9 @@ class SectorViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny, )
 
     @action(detail=False, methods=['GET'])
-    def machine_sector(self, request):
-        m_id = self.request.query_params.get('m_id')
+    def machine_sector(self, request) -> Response:
+        ''' Get sectors by machine id '''
+        m_id = request.query_params.get('m_id')
         machine = Machine.objects.get(id=m_id)
         sectors = Sector.objects.filter(machine=machine)
         if sectors:
@@ -44,6 +48,7 @@ class PartViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def sector_part(self, request):
+        ''' Get parts by sector id '''
         s_id = self.request.query_params.get('s_id')
         sector = Sector.objects.get(id=s_id)
         parts = Part.objects.filter(sector=sector)
@@ -56,6 +61,7 @@ class PartViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def id_from_reference(self, request):
+        ''' Get parts by reference and sector '''
         ref = self.request.query_params.get('ref')
         sector = self.request.query_params.get('sector')
         part = Part.objects.filter(sector=sector, reference=ref)
@@ -65,13 +71,14 @@ class PartViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def get_trm(self, request):
-        URL = "https://www.dolar-colombia.com/"
-        HTML = urlopen(URL)
-        bs = BeautifulSoup(HTML, "html.parser")
-        elems = bs.find_all(
-            "span", {"class": "exchange-rate exchange-rate_up"})
-        for elem in elems:
-            trm = elem.get_text()
-            if trm:
-                return Response(trm, status=status.HTTP_200_OK)
+        ''' Get trm related Dolar and Colombian Pesos '''
+        url = "https://www.dolar-colombia.com/"
+        with urlopen(url) as html_page:
+            bs_site = BeautifulSoup(html_page, "html.parser")
+            elems = bs_site.find_all(
+                "span", {"class": "exchange-rate exchange-rate_up"})
+            for elem in elems:
+                trm = elem.get_text()
+                if trm:
+                    return Response(trm, status=status.HTTP_200_OK)
         return Response('Elemento no encontrado', status=status.HTTP_200_OK)

@@ -1,3 +1,4 @@
+''' Order serializers '''
 from rest_framework import serializers
 from machines.models import Part
 
@@ -5,6 +6,7 @@ from orders.models import Order
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    ''' Serializers from models custom create '''
     created = serializers.DateTimeField(format="%d-%m-%Y %H:%M:%S",
                                         required=False)
 
