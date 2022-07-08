@@ -14,7 +14,6 @@ from pathlib import Path
 
 from django.conf import os
 from decouple import config
-from dj_database_url import parse as dburl
 import dj_database_url
 
 
@@ -182,8 +181,8 @@ MEDIA_URL = '/media/'
 
 
 SECURE_HSTS_SECONDS = 31536000
-SECURE_SSL_REDIRECT = config('DEBUG', default=False, cast=bool)
-CSRF_COOKIE_SECURE = config('DEBUG', default=False, cast=bool)
-SECURE_HSTS_INCLUDE_SUBDOMAINS = config('DEBUG', default=False, cast=bool)
-SESSION_COOKIE_SECURE = config('DEBUG', default=False, cast=bool)
-SECURE_HSTS_PRELOAD = config('DEBUG', default=False, cast=bool)
+SECURE_SSL_REDIRECT = config('LOCAL', default=True, cast=bool)
+CSRF_COOKIE_SECURE = config('LOCAL', default=True, cast=bool)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('LOCAL', default=True, cast=bool)
+SESSION_COOKIE_SECURE = config('LOCAL', default=True, cast=bool)
+SECURE_HSTS_PRELOAD = config('LOCAL', default=True, cast=bool)
