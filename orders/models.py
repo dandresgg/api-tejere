@@ -29,3 +29,6 @@ class Order(models.Model):
                                    null=True,
                                    blank=True)
     modified = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        ordering = ['-created']
