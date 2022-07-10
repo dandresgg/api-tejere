@@ -76,7 +76,7 @@ class PartViewSet(viewsets.ModelViewSet):
         with urlopen(url) as html_page:
             bs_site = BeautifulSoup(html_page, "html.parser")
             elems = bs_site.find_all(
-                "span", {"class": "exchange-rate exchange-rate_up"})
+                "span", {"class": "exchange-rate"})
             for elem in elems:
                 trm = elem.get_text()
                 if trm:
